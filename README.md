@@ -9,43 +9,20 @@ Reading the following will help you get a sense of the big picture when it comes
 - [How the Web Works](https://medium.freecodecamp.org/how-the-web-works-a-primer-for-newcomers-to-web-development-or-anyone-really-b4584e63585c) - Read all 3 parts, especially part 3!
 - [Basics of HTTP](https://egghead.io/courses/understand-the-basics-of-http)
 
-This project will be broken down into multiple parts. After you finish this project, you must submit it by following the instructions below.
+This project will be broken down into multiple parts. After you finish this project, you must submit your repository link to me.
 
-This exercise is due before this Monday, September 17th at 11:59PM. If you have spent over 10 hours total including your work with react-exercise, submit what you have!
-
-For any questions, feel free to email tko@hack4impact.org.
+This exercise's first part is due by today EOD, February 21st.
 
 ### Requirements
 
 - python version 3.x
 - pip
-- pipenv
+- conda
 - [Postman](https://www.getpostman.com/)
-
-Installation instructions for [Mac](https://github.com/hack4impact-uiuc/wiki/wiki/Mac-Setup) and [Windows](https://github.com/hack4impact-uiuc/wiki/wiki/Windows-Subsystem-for-Linux-Setup#setting-up-python).
-
-Another great resource for anything on python, including installation is [The Hitchhiker's guide to python](https://docs.python-guide.org/).
-
-Check if you have the correct versions by running the following commands in your terminal:
-
-```
-python3 -V
-```
-
-```
-pip3 -V
-```
-
-```
-pipenv --version
-```
 
 ### Setup
 
 First, fork this repository. The fork button on your top right. What this does is copies this repository over to your account. Now you should have a repository with the name `<yourusername>/flask-exercise`.
-
-It should look like this (my username is tko22):
-![fork](docs/fork.png)
 
 Then, clone this repository (click the green button saying "Clone or Download", choose http, and copy and paste it the location `<url>` ) and go into it:
 
@@ -54,59 +31,62 @@ $ git clone <url>
 $ cd flask-exercise
 ```
 
-Then, setup your virtual environment and install the python dependencies required to run this app. We use pipenv, which automatically sets everything up, given a Pipfile and Pipfile.lock. Pipfile uses virtualenv, which is a virtual Python environment isolated from other Python projects, incapable of interfering with or being affected by other Python programs on the same machine. You are thus capable of running different versions of the same package or even different python versions.
+Then, setup your virtual environment and install the python dependencies required to run this app. We use conda, which automatically sets everything up for the environment according to specific python version.
+
+Follow these following steps in `Anaconda Shell`:
+
+1. Creating environment with name: `flask-task`
+
+   ```
+   conda create -n flask-task python=3.8
+   ```
+
+2. Activate the environment
+
+   ```
+   conda activate flask-task
+   ```
+
+3. Install dependencies (you should be in the same directory as the `requirements.txt` file)
+
+   ```
+   pip install -r requirements.txt
+   ```
+
+4. Start flask server (you should be in the same directory as the `app.py` file)
+   ```
+   python app.py
+   ```
+
+- Note: This will remain a running process in your terminal, so you will need to open a new tab or window to execute other commands.
+
+- To stop the server, press `Control-C`.
+
+- To exit your virtual environment, run:
+
+  ```
+  conda deactivate
+  ```
+
+Before you make any changes to the code, make sure to create a new branch. Typically branches are named based on the feature or bugfix being addressed, but for this project, create a new branch: `dev`:
 
 ```
-pipenv install --skip-lock
+git checkout -b dev
 ```
 
-You must be in this virtual environment to start this server. To do that:
+- Branch names should be all lowercase and can't contain spaces. Instead of spaces, use hyphens. For example:
 
-```
-pipenv shell
-```
-
-Then, to start the server run:
-
-```
-(backend-exercise-o4dc6oDL)$ python app.py
-```
-
-Note: This will remain a running process in your terminal, so you will need to open a new tab or window to execute other commands.
-
-To stop the server, press `Control-C`.
-
-To exit your virtual environment, which is named `backend-exercise-[something here]`, run:
-
-```
-(backend-exercise-o4dc6oDL)$ deactivate
-```
-
-You can also add `pipenv run` before any command instead of having to run `pipenv shell`. eg `pipenv run python app.py`
-
-Before you make any changes to the code, make sure to create a new branch. Typically branches are named based on the feature or bugfix being addressed, but for this project, name your branch with your own name so your reviewer can easily follow:
-
-```
-git checkout -b <YOUR_NAME>
-```
-
-Branch names should be all lowercase and can't contain spaces. Instead of spaces, use hyphens. For example:
-
-```
-git checkout -b varun-munjeti
-```
+  ```
+  git checkout -b dev-2
+  ```
 
 ### Running The Server And Calling Endpoints
 
-Starting the server will make it a continuously running process on `localhost:5000`. In order to make requests to your server, use [Postman](https://www.getpostman.com/).
+Starting the server will make it a continuously running process on `127.0.0.1:5000`. In order to make requests to your server, use [Postman](https://www.getpostman.com/).
 
-First, make a `GET` request to the `/` endpoint. Since the server is running on `localhost:5000`, the full endpoint url is `localhost:5000/`.
+First, make a `GET` request to the `/` endpoint. Since the server is running on `127.0.0.1:5000`, the full endpoint url is `127.0.0.1:5000/`.
 
-![Postman GET](docs/postman_get.png)
-
-Try calling the `/mirror` endpoint. First, look at the code for the endpoint to see how you can specify url parameters. Then make a request on Postman to `localhost:5000/mirror/<name>`:
-
-![Postman GET mirror](docs/postman_get_mirror.png)
+Try calling the `/mirror` endpoint. First, look at the code for the endpoint to see how you can specify url parameters. Then make a request on Postman to `127.0.0.1:5000/mirror/<name>`:
 
 # Exercises
 
@@ -186,7 +166,7 @@ If `team` is provided as a query string parameter, only return the users that ar
 
 For this exercise, you can ignore any query string parameters other than `team`.
 
-In Postman, you can supply query string parameters writing the query string into your request url or by hitting the `Params` button next to `Send`. Doing so will automatically fill in the request url.
+In Postman, you can supply query string parameters in the `Params` section of request, doing so will automatically fill in the request url.
 
 The following should happen
 
@@ -213,8 +193,6 @@ GET /users?team=LWB
 }
 ```
 
-![Postman Query String Request](docs/postman_querystring.png)
-
 ## Part 4
 
 Define the endpoint:
@@ -223,14 +201,11 @@ Define the endpoint:
 POST /users
 ```
 
-This endpoint should create a new user. Each request should also send a `name`, `age`, and `team` parameter in the request's `body`. The `id` property will be created automatically in the mockdb.
+This endpoint should create a new user. Each request should also send a `name`, `age`, and `team` parameter. The `id` property will be created automatically in the mockdb.
 
 A successful request should return a status code of `201` and return the newly created user.
 
 If any of the three required parameters aren't provided, DO NOT create a new user in the db and return a `422` with a useful `message`. In general, your messages should provide the user/developer useful feedback on what they did wrong and how they can fix it.
-
-This is how you can send `body` parameters from Postman. Make sure you don't mistake this for query parameters!
-![Postman POST](docs/postman_post.png)
 
 ## Part 5
 
@@ -240,11 +215,9 @@ Define the endpoint:
 PUT /users/<id>
 ```
 
-Here we need to provide a user's `id` since we need to specify which user to update. The `body` for this request should contain the same attributes as the `POST` request from Part 4.
+Here we need to provide a user's `id` since we need to specify which user to update.
 
 However, the difference with this `PUT` request is that only values with the provided keys (`name`, `age`, `team`) will be updated, and any parameters not provided will not change the corresponding attribute in the user being updated.
-
-You do not need to account for `body` parameters provided that aren't `name`, `age`, or `team`.
 
 If the user with the provided `id` cannot be found, return a `404` and a useful `message`.
 
@@ -279,40 +252,14 @@ Each method also accepts a `client` object, which is automatically injected by p
 
 When you're done with all the steps, push your changes to your github repo!
 
-Let's run [black](https://github.com/ambv/black), a python formatter, before you submit. This removes all arguments on how we want to style your python code and gives reviewers a standardized style to review from. You must have it installed with `pipenv install --dev`
+Let's run [black](https://github.com/ambv/black), a python formatter, before you submit. This removes all arguments on how we want to style your python code and gives reviewers a standardized style to review from.
+
+From code directory run:
 
 ```
-pipenv run black .
+black .
 ```
 
-Before you can submit a PR, you'll have to push your branch to a remote branch (the one that's on GitHub, not local).
+Finally push your code to github, not directly on `master` branch but on the `dev` brach created in initail steps. Then create a pull request from dev branch and merge into master
 
-Check to see that you're on your branch:
-
-```
-git branch
-```
-
-If you want to make sure all of your commits are in:
-
-```
-git log
-```
-
-Press `Q` to quit the `git log` screen.
-
-Push your commits to your remote branch:
-
-```
-git push
-```
-
-The first time you do this, you might get an error since your remote branch doesn't exist yet. Usually it will tell you the correct command to use:
-
-```
-git push --set-upstream origin <YOUR_BRANCH_NAME>
-```
-
-Note: this only needs to be done the first time you push a new branch. You can use just `git push` afterwards.
-
-Once this is done, please send an email to tko@hack4impact.org with the link to your _forked_ repository and your branch name. We will need these two things to view your submission.
+Don't forget to share your postman workspace link in repo with properly named requests and sharing settings enabled

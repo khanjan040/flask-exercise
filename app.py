@@ -1,5 +1,7 @@
 # from crypt import methods
+#from crypt import methods
 from typing import Tuple
+from flask import request
 from urllib.parse import urlparse
 from flask import Flask, jsonify, request, Response
 import mockdb.mockdb_interface as db
@@ -8,7 +10,7 @@ app = Flask(__name__)
 
 
 def create_response(
-    data: dict = None, status: int = 200, message: str = ""
+    data = None, status: int = 200, message: str = ""
 ) -> Tuple[Response, int]:
     """Wraps response in a consistent format throughout the API.
 
@@ -25,7 +27,7 @@ def create_response(
     :param message <str> optional message
     :returns tuple of Flask Response and int, which is what flask expects for a response
     """
-    if type(data) is not dict and data is not None:
+    if data is None:
         raise TypeError("Data should be a dictionary 😞")
 
     response = {
@@ -54,42 +56,46 @@ def mirror(name):
 
 @app.route("/users")
 def users():
-    data = db.db_state
-    for user in data["users"]:
-        print(user)
+    data = db.get("users")
     return create_response(data)
 
 @app.route("/users/<id>")
 def spid(id):
-    data = db.db_state
-    for user in data["users"]:
-        if user['id'] == int(id):
-            return create_response(user)
+    data = db.getById("users", int(id))
+    return create_response(data)
 
-@app.route("/users?team=LWb")
+@app.route("/users/teams")
 def users_query():
-    url = '/users?team=LWb'
-    parsed = urlparse.urlparse(url)
-    captured_value = urlparse.parse_qs(parsed.query)['team'][0]
-    data = db.db_state
-    for user in data["users"]:
-        if user['team'] == (captured_value):
-            return create_response(user)
+    var = request.args.get("team")
+    print(var)
+    data = db.get("users")
+    temp=[]
+    for user in data:
+        if user['team'] == var:
+            temp.append(user)
+    return create_response(temp)
 
 @app.route("/createuser", methods = ['POST'])
 def createuser():
-    data = request.json
+    temp = request.json
+    data = db.create("users",temp)
     return create_response(data)
 
 @app.route("/users/<id>", methods = ['PUT'])
 def update(id):
-    data = db.db_state
-    for user in data["users"]:
-        if user['id'] == int(id):
-            
-            return create_response(user)
+    temp = request.json
+    data = db.updateById("users", int(id),temp)
+    if data is None:
+        return ({"status": 404, "message":"User not found"})
+    return create_response(data)
 
-
+@app.route("/users/<id>", methods = ['DELETE'])
+def delete(id):
+    db.deleteById("users", int(id)) is not None
+    if db.get("users") is not None:
+        return {"status": 200, "message":"User Deleted Successfully"}
+    else:
+        return {"status": 404, "message":"Unsuccessfully"}
 
 # TODO: Implement the rest of the API here!
 

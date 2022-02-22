@@ -1,5 +1,6 @@
+# from crypt import methods
 from typing import Tuple
-
+from urllib.parse import urlparse
 from flask import Flask, jsonify, request, Response
 import mockdb.mockdb_interface as db
 
@@ -51,11 +52,49 @@ def mirror(name):
     data = {"name": name}
     return create_response(data)
 
+@app.route("/users")
+def users():
+    data = db.db_state
+    for user in data["users"]:
+        print(user)
+    return create_response(data)
+
+@app.route("/users/<id>")
+def spid(id):
+    data = db.db_state
+    for user in data["users"]:
+        if user['id'] == int(id):
+            return create_response(user)
+
+@app.route("/users?team=LWb")
+def users_query():
+    url = '/users?team=LWb'
+    parsed = urlparse.urlparse(url)
+    captured_value = urlparse.parse_qs(parsed.query)['team'][0]
+    data = db.db_state
+    for user in data["users"]:
+        if user['team'] == (captured_value):
+            return create_response(user)
+
+@app.route("/createuser", methods = ['POST'])
+def createuser():
+    data = request.json
+    return create_response(data)
+
+@app.route("/users/<id>", methods = ['PUT'])
+def update(id):
+    data = db.db_state
+    for user in data["users"]:
+        if user['id'] == int(id):
+            
+            return create_response(user)
+
+
 
 # TODO: Implement the rest of the API here!
 
-"""
-~~~~~~~~~~~~ END API ~~~~~~~~~~~~
-"""
+    """
+    ~~~~~~~~~~~~ END API ~~~~~~~~~~~~
+    """
 if __name__ == "__main__":
     app.run(debug=True)

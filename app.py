@@ -43,10 +43,17 @@ def create_response(
 ~~~~~~~~~~~~ API ~~~~~~~~~~~~
 """
 
+@app.route('/')
+def hello_geek():
+    return '<h1>Hello from Flask & Docker</h2>'
 
-@app.route("/")
-def hello_world():
-    return create_response({"content": "hello world!"})
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+# @app.route("/")
+# def hello_world():
+#     return create_response({"content": "hello world!"})
 
 
 @app.route("/mirror/<name>")

@@ -41,3 +41,6 @@ def test_get_user_id(client):
     print(res.json)
     # assert res_user["name"] == "Aria"
     # assert res_user["age"] == 19
+
+
+
